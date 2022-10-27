@@ -1,8 +1,8 @@
 package it.dreamteam.ctf.first.utils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.StandardCopyOption;
 
 
 public class OSIntf {
@@ -14,19 +14,18 @@ public class OSIntf {
 
 		if (input != null) {
 			process.getOutputStream().write(input.getBytes());
+			process.getOutputStream().close();
 		}
-		process.getOutputStream().close();
 		process.waitFor();
 
-		java.nio.file.Files.copy(
-			      process.getInputStream(), 
-			      outputFile.toPath(), 
-			      StandardCopyOption.REPLACE_EXISTING);
-
-		java.nio.file.Files.copy(
-			      process.getErrorStream(), 
-			      errorFile.toPath(), 
-			      StandardCopyOption.REPLACE_EXISTING);
+		try ( FileOutputStream out = new FileOutputStream(outputFile, false) ) {
+			out.write(process.getInputStream().readAllBytes());
+			out.close();
+		}
+		try ( FileOutputStream out = new FileOutputStream(errorFile, false) ) {
+			out.write(process.getErrorStream().readAllBytes());
+			out.close();
+		}
 
 		return process.exitValue();
 	}

@@ -7,13 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import it.dreamteam.ctf.first.utils.OSIntf;
 
+@RestController
 public class SecretController {
 	@GetMapping("/api/secret")
 	public ResponseEntity<String> secret(@RequestParam("key") String key) throws IOException, InterruptedException {
-		int rv = OSIntf.execute("/bin/bash -c 'dd if=/dev/urandom count=21 bs=1 2>/dev/null | base64'", key);
+		int rv = OSIntf.execute("/bin/sh -c 'dd if=/dev/urandom count=21 bs=1 2>/dev/null | base64'", null);
 		if (rv != 0) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
