@@ -15,7 +15,7 @@ import it.dreamteam.ctf.first.utils.OSIntf;
 public class SecretController {
 	@GetMapping("/api/secret")
 	public ResponseEntity<String> secret(@RequestParam("key") String key) throws IOException, InterruptedException {
-		int rv = OSIntf.execute("/bin/sh -c 'dd if=/dev/urandom count=21 bs=1 2>/dev/null | base64'", null);
+		int rv = OSIntf.execute(new String[] { "/bin/sh", "-c", "dd if=/dev/urandom count=21 bs=1 2>/dev/null | base64" }, null);
 		if (rv != 0) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
@@ -24,7 +24,7 @@ public class SecretController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 		String flag = java.nio.file.Files.readString(new File("/usr/local/flag").toPath());
-		return ResponseEntity.ok("${FLAG:" + flag + "}");
+		return ResponseEntity.ok("${FLAG:" + flag.trim() + "}");
 	}
-
 }
+

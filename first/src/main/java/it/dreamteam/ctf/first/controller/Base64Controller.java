@@ -12,7 +12,7 @@ import it.dreamteam.ctf.first.utils.OSIntf;
 public class Base64Controller {
 	@GetMapping("/api/b64/decode")
 	public String b64decode(@RequestParam("value") String b64) throws IOException, InterruptedException {
-		int rv = OSIntf.execute("base64 -d", b64);
+		int rv = OSIntf.execute(new String[] { "base64", "-d" }, b64);
 		if (rv == 0) {
 			return OSIntf.getOutput();
 		} else {
@@ -22,7 +22,7 @@ public class Base64Controller {
 
 	@GetMapping("/api/b64/encode")
 	public String b64encode(@RequestParam("value") String b64) throws IOException, InterruptedException {
-		int rv = OSIntf.execute("base64", b64);
+		int rv = OSIntf.execute(new String[] { "base64" }, b64);
 		if (rv == 0) {
 			return OSIntf.getOutput();
 		} else {

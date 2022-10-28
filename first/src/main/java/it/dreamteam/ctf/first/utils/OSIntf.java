@@ -9,7 +9,7 @@ public class OSIntf {
 	public static File outputFile = new File("/tmp/output");
 	public static File errorFile = new File("/tmp/error");
 
-	public static int execute(String cmd, String input) throws IOException, InterruptedException {
+	public static int execute(String[] cmd, String input) throws IOException, InterruptedException {
 		Process process = Runtime.getRuntime().exec(cmd);
 
 		if (input != null) {
