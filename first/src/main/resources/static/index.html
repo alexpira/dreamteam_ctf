@@ -1,8 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title></title>
+<title>DREAMTEAM (&amp; BIN) FIRST CTF CONTEXT</title>
+<style type="text/css">
+body {
+	background-color: #000;
+	color: #3aff26;
+	font-family: Roboto, Verdana, Arial, Helvetica, sans-serif;
+	font-size: 20px;
+}
+span.hilite {
+	color: #fff;
+	animation: blinker 1s linear infinite;
+	opacity: 1;
+	font-weight: bold;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0.2;
+  }
+}
+input {
+	color: #41ff00;
+	background-color: #19373a;
+	border: 1px solid #537153;
+	font-size: 20px;
+	margin: 1em;
+}
+.button {
+	outline: none !important;
+	display: inline-block;
+	background: #19373a;
+	border-radius: 2px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #eeeeee;
+	padding: 4px 8px;
+	margin: 2px;
+	border-color: #275053;
+	cursor: pointer;
+}
+</style>
+<script>
+function submit() {
+	let key = document.getElementById('key').value;
+	fetch("/api/secret?key="+key).then((response) => {
+		if (response.status === 403) {
+			document.getElementById('result').innerHTML = 'WRONG!';
+		} else if (response.status === 200) {
+			response.text().then(txt => document.getElementById('result').innerHTML = txt);
+		} else {
+			document.getElementById('result').innerHTML = 'Whooops... something unexpected happened...';
+		}
+	});
+}
+</script>
 <body>
-Hello
+
+<p>
+Welcome to <span class="hilite">DREAMTEAM (&amp; BIN)</span> first CTF challenge.
+</p>
+
+<p>
+<b>GOAL</b>: get the flag.
+</p>
+
+<p>
+<b>Rules</b>:
+<ul>
+<li>You cannot unpack or disassemble the included jar unless you are able to extract it from the live container</li>
+<li>Interacting with the container can be done only on port 8080 (i.e. opening a shell or inspecting the container via docker exec is not allowed)</li>
+<li>Access to remote resources (i.e. google, github, wikipedia, exploit-db) for collecting infos is allowed</li>
+</ul>
+</p>
+
+Now, if you insert the correct key you'll get the flag here:<br>
+<input id="key" type="text">
+<div class="button" onClick="submit()">I feel lucky</div>
+
+<div id="result"></div>
+
+<!-- TODO: remember to update github repository https://github.com/alexpira/dreamteam_ctf -->
+
 </body>
 </html>
